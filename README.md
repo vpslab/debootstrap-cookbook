@@ -32,6 +32,24 @@ Debootstrap resource
       mirror "http://mirror.hetzner.de/debian/packages"
     end
 
+Caching deboostrap templates
+============================
+
+Debootstrap process can take several minutes depending on machine and mirror used.
+Simple template caching can be used to improve the process if debootstrap
+is used repeateadly with the same parameteres:
+
+    debootstrap destination_path do
+      suite "precise"
+      arch  "amd64"
+      cache true
+      cache_dir "/tmp/debootstrap"
+    end
+
+Each cached run updates debootstrap template. Beware that template is created for
+each set of `suite`, `arch` and `extra_packages` and is never purged.
+
+
 License and Author
 ==================
 
