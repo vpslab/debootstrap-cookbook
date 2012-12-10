@@ -28,6 +28,8 @@ Debootstrap resource
     debootstrap destination_path do
       arch "amd64"
       suite "wheezy"
+      owner "root"
+      group "root"
       extra_packages %w(sudo)
       mirror "http://mirror.hetzner.de/debian/packages"
     end
