@@ -43,7 +43,7 @@ is used repeateadly with the same parameteres:
       suite "precise"
       arch  "amd64"
       cache true
-      cache_dir "/tmp/debootstrap"
+      cache_dir "/var/cache"
     end
 
 Each cached run updates debootstrap template. Beware that template is created for
