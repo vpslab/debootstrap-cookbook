@@ -8,6 +8,8 @@ end
 attribute :mirror, :kind_of => String
 attribute :arch,   :kind_of => String
 attribute :suite,  :kind_of => String
+attribute :user,   :kind_of => String
+attribute :group,  :kind_of => String
 attribute :cache,  :kind_of => TrueClass, :default => false
 attribute :cache_dir,        :kind_of => String, :default => "/var/cache/debootstrap"
 attribute :extra_packages,   :kind_of => Array

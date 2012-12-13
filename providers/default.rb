@@ -4,14 +4,16 @@ action :create do
   arch   = new_resource.arch   || node['debootstrap']['arch']
   suite  = new_resource.suite  || node['debootstrap']['suite']
   mirror = new_resource.mirror || node['debootstrap']['mirror']
+  user   = new_resource.user
+  group  = new_resource.group
   extra_packages = new_resource.extra_packages || node['debootstrap']['include']
 
   unless new_resource.cache
-    debootstrap(new_resource.destination_path, suite, arch, extra_packages, mirror)
+    debootstrap(new_resource.destination_path, suite, arch, extra_packages, mirror, user, group)
     update_bootstrapped_system(new_resource.destination_path)
   else
     tmp_dir = template_dir(new_resource.cache_dir, suite, arch, extra_packages)
-    debootstrap(tmp_dir, suite, arch, extra_packages, mirror) unless ::File.exist? tmp_dir
+    debootstrap(tmp_dir, suite, arch, extra_packages, mirror, user, group) unless ::File.exist? tmp_dir
     update_bootstrapped_system(tmp_dir)
     copy_template(tmp_dir, new_resource.destination_path)
   end
@@ -37,7 +39,7 @@ def update_bootstrapped_system(bootstrap_dir)
   execute "chroot #{bootstrap_dir} apt-get dist-upgrade -y"
 end
 
-def debootstrap(bootstrap_dir, suite, arch, extra_packages, mirror)
+def debootstrap(bootstrap_dir, suite, arch, extra_packages, mirror, user, group)
   base_cmd = case suite
              when *ubuntu_suites
                'debootstrap --verbose --components=main,universe'
@@ -48,6 +50,8 @@ def debootstrap(bootstrap_dir, suite, arch, extra_packages, mirror)
 
   execute "debootstrap #{bootstrap_dir}" do
     command "#{base_cmd} --arch #{arch} #{suite} #{bootstrap_dir} #{mirror}"
+    user user
+    group group
   end
 end
 
