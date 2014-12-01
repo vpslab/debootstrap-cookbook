@@ -22,7 +22,7 @@ action :create do
 end
 
 def ubuntu_suites
-  %w(raring quantal precise oneiric natty maverick lucid karmic jaunty intrepid hardy)
+  %w(utopic trusty saucy raring quantal precise oneiric natty maverick lucid karmic jaunty intrepid hardy)
 end
 
 def debian_suites
